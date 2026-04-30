@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Control de Gastos e Ingresos</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><rect width='36' height='36' rx='9' fill='%231a1a1a'/><rect x='6' y='13' width='24' height='14' rx='2.5' fill='none' stroke='%23fff' stroke-width='1.5'/><rect x='6' y='13' width='5' height='14' fill='%23333'/><rect x='25' y='13' width='5' height='14' fill='%23333'/><circle cx='18' cy='20' r='4' fill='none' stroke='%23fff' stroke-width='1.3'/><text x='18' y='23.5' text-anchor='middle' font-family='sans-serif' font-size='6' font-weight='600' fill='%23fff'>$</text></svg>">
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Gastos">
+<meta name="theme-color" content="#1a1a1a">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f3; color: #1a1a1a; min-height: 100vh; padding: 2rem 1rem; }
@@ -68,6 +74,39 @@
   .add-btn { width: 100%; margin-top: 10px; padding: 9px; border-radius: 8px; border: 1px dashed #d0d0cc; background: transparent; font-size: 13px; color: #999; cursor: pointer; transition: all 0.12s; font-family: inherit; }
   .add-btn:hover { background: #f5f5f3; color: #666; }
 
+  /* Registro de movimientos */
+  .mov-form { display: grid; grid-template-columns: 1fr 120px auto; gap: 8px; margin-bottom: 12px; }
+  .mov-form input[type=text] { padding: 8px 10px; border-radius: 8px; border: 1px solid #d0d0cc; font-size: 13px; font-family: inherit; outline: none; background: #f9f9f7; }
+  .mov-form input[type=text]:focus { border-color: #999; background: #fff; }
+  .mov-form input[type=number] { padding: 8px 10px; border-radius: 8px; border: 1px solid #d0d0cc; font-size: 13px; font-family: inherit; outline: none; background: #f9f9f7; text-align: right; }
+  .mov-form input[type=number]:focus { border-color: #999; background: #fff; }
+  .mov-add-btn { padding: 8px 12px; border-radius: 8px; border: none; background: #1a1a1a; color: #fff; font-size: 13px; cursor: pointer; font-family: inherit; white-space: nowrap; }
+  .mov-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f5f5f3; gap: 8px; }
+  .mov-row:last-child { border-bottom: none; }
+  .mov-info { flex: 1; }
+  .mov-nombre { font-size: 13px; font-weight: 500; }
+  .mov-fecha { font-size: 11px; color: #bbb; margin-top: 1px; }
+  .mov-monto { font-size: 14px; font-weight: 600; color: #b03030; white-space: nowrap; }
+  .mov-del { width: 26px; height: 26px; border-radius: 50%; border: 1px solid #e8e8e5; background: none; cursor: pointer; font-size: 13px; color: #ccc; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .mov-del:hover { border-color: #b03030; color: #b03030; }
+  .sin-movs { font-size: 13px; color: #bbb; text-align: center; padding: 12px 0; }
+
+  /* Ingresos adicionales */
+  .ing-form { display: grid; grid-template-columns: 1fr 120px auto; gap: 8px; margin-bottom: 12px; }
+  .ing-form input[type=text] { padding: 8px 10px; border-radius: 8px; border: 1px solid #d0d0cc; font-size: 13px; font-family: inherit; outline: none; background: #f9f9f7; }
+  .ing-form input[type=text]:focus { border-color: #999; background: #fff; }
+  .ing-form input[type=number] { padding: 8px 10px; border-radius: 8px; border: 1px solid #d0d0cc; font-size: 13px; font-family: inherit; outline: none; background: #f9f9f7; text-align: right; }
+  .ing-form input[type=number]:focus { border-color: #999; background: #fff; }
+  .ing-add-btn { padding: 8px 12px; border-radius: 8px; border: none; background: #1a7a4a; color: #fff; font-size: 13px; cursor: pointer; font-family: inherit; white-space: nowrap; }
+  .ing-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f5f5f3; gap: 8px; }
+  .ing-row:last-child { border-bottom: none; }
+  .ing-info { flex: 1; }
+  .ing-nombre { font-size: 13px; font-weight: 500; }
+  .ing-fecha { font-size: 11px; color: #bbb; margin-top: 1px; }
+  .ing-monto { font-size: 14px; font-weight: 600; color: #1a7a4a; white-space: nowrap; }
+  .ing-del { width: 26px; height: 26px; border-radius: 50%; border: 1px solid #e8e8e5; background: none; cursor: pointer; font-size: 13px; color: #ccc; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .ing-del:hover { border-color: #b03030; color: #b03030; }
+
   .progress-bar-wrap { height: 6px; background: #efefec; border-radius: 999px; margin-top: 1.5rem; overflow: hidden; }
   .progress-bar { height: 100%; border-radius: 999px; transition: width 0.4s ease, background 0.3s; }
   .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: #999; margin-top: 6px; }
@@ -111,21 +150,68 @@
     <div class="metric"><div class="metric-label">Saldo disponible</div><div class="metric-value" id="sumBalance">$0</div></div>
   </div>
 
+  <!-- INGRESOS ADICIONALES -->
+  <div class="section">
+    <div class="section-title" style="margin-bottom:1rem">Ingresos adicionales</div>
+    <div class="ing-form">
+      <input type="text" id="ingNombre" placeholder="Prima, inversión, bono..." />
+      <input type="number" id="ingMonto" placeholder="$0" min="0" />
+      <button class="ing-add-btn" onclick="registrarIngreso()">+ Ingreso</button>
+    </div>
+    <div id="ingresosList"></div>
+  </div>
+
   <div class="section">
     <div class="section-title">Semanas — días trabajados y pasajes</div>
     <div id="weeksContainer"></div>
   </div>
 
+  <!-- REGISTRO DE MOVIMIENTOS -->
   <div class="section">
-    <div class="section-title">Gastos variables</div>
-    <div id="expensesContainer"></div>
-    <button class="add-btn" onclick="addExpense()">+ Agregar gasto</button>
+    <div class="section-header">
+      <div class="section-title">Registro de gastos</div>
+    </div>
+    <!-- Categorías -->
+    <div class="cat-chips" id="catChips"></div>
+    <!-- Formulario -->
+    <div class="gasto-form">
+      <input type="text" id="gastoNombre" placeholder="Descripción del gasto" />
+      <input type="number" id="gastoMonto" placeholder="$0" min="0" />
+      <button class="gasto-add-btn" onclick="registrarGasto()">Registrar</button>
+    </div>
+    <!-- Lista movimientos -->
+    <div class="movimientos" id="movimientosList"></div>
   </div>
 
+  <!-- NOTAS -->
   <div class="section">
-    <div class="section-title">Notas</div>
-    <textarea id="notasArea" placeholder="Escribe aquí tus notas..." style="width:100%;min-height:120px;border:1px solid #e8e8e5;border-radius:10px;padding:12px;font-family:inherit;font-size:14px;color:#1a1a1a;background:#f9f9f7;resize:vertical;outline:none;line-height:1.6;"></textarea>
+    <div class="section-title" style="margin-bottom:10px">Notas</div>
+    <textarea class="notes-area" id="notasArea" placeholder="Escribe aquí tus notas..."></textarea>
   </div>
+
+  <div>
+    <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="progress-label"><span>Gastos vs ingresos</span><span id="progressPct">0%</span></div>
+  </div>
+</div>
+
+<!-- MODAL SETTINGS -->
+<div class="overlay" id="overlaySettings" style="display:none">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div class="modal-hdr-row"><div class="modal-title">Configuración</div><button class="modal-close" onclick="cerrarSettings()">×</button></div>
+      <div class="modal-divider"></div>
+    </div>
+    <div class="modal-body">
+      <div class="field"><label>Tu nombre</label><input type="text" id="sNombre"/></div>
+      <div class="field"><label>Salario mensual</label><input type="number" id="sPago" min="0"/></div>
+      <div class="modal-btns">
+        <button class="btn-ghost" onclick="cerrarSettings()">Cancelar</button>
+        <button class="btn-primary" onclick="guardarSettings()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
   <div>
     <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
@@ -373,6 +459,12 @@ function render() {
 }
 
 render();
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js");
+  });
+}
 </script>
 </body>
 </html>
