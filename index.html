@@ -168,50 +168,25 @@
 
   <!-- REGISTRO DE MOVIMIENTOS -->
   <div class="section">
-    <div class="section-header">
-      <div class="section-title">Registro de gastos</div>
+    <div class="section-title" style="margin-bottom:1rem">Registro de gastos</div>
+    <div class="mov-form">
+      <input type="text" id="movNombre" placeholder="Descripción del gasto" />
+      <input type="number" id="movMonto" placeholder="$0" min="0" />
+      <button class="mov-add-btn" onclick="registrarMov()">Registrar</button>
     </div>
-    <!-- Categorías -->
-    <div class="cat-chips" id="catChips"></div>
-    <!-- Formulario -->
-    <div class="gasto-form">
-      <input type="text" id="gastoNombre" placeholder="Descripción del gasto" />
-      <input type="number" id="gastoMonto" placeholder="$0" min="0" />
-      <button class="gasto-add-btn" onclick="registrarGasto()">Registrar</button>
-    </div>
-    <!-- Lista movimientos -->
-    <div class="movimientos" id="movimientosList"></div>
+    <div id="movimientosList"></div>
   </div>
 
-  <!-- NOTAS -->
   <div class="section">
-    <div class="section-title" style="margin-bottom:10px">Notas</div>
-    <textarea class="notes-area" id="notasArea" placeholder="Escribe aquí tus notas..."></textarea>
+    <div class="section-title">Gastos fijos</div>
+    <div id="expensesContainer"></div>
+    <button class="add-btn" onclick="addExpense()">+ Agregar gasto</button>
   </div>
 
-  <div>
-    <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
-    <div class="progress-label"><span>Gastos vs ingresos</span><span id="progressPct">0%</span></div>
+  <div class="section">
+    <div class="section-title">Notas</div>
+    <textarea id="notasArea" placeholder="Escribe aquí tus notas..." style="width:100%;min-height:120px;border:1px solid #e8e8e5;border-radius:10px;padding:12px;font-family:inherit;font-size:14px;color:#1a1a1a;background:#f9f9f7;resize:vertical;outline:none;line-height:1.6;"></textarea>
   </div>
-</div>
-
-<!-- MODAL SETTINGS -->
-<div class="overlay" id="overlaySettings" style="display:none">
-  <div class="modal">
-    <div class="modal-hdr">
-      <div class="modal-hdr-row"><div class="modal-title">Configuración</div><button class="modal-close" onclick="cerrarSettings()">×</button></div>
-      <div class="modal-divider"></div>
-    </div>
-    <div class="modal-body">
-      <div class="field"><label>Tu nombre</label><input type="text" id="sNombre"/></div>
-      <div class="field"><label>Salario mensual</label><input type="number" id="sPago" min="0"/></div>
-      <div class="modal-btns">
-        <button class="btn-ghost" onclick="cerrarSettings()">Cancelar</button>
-        <button class="btn-primary" onclick="guardarSettings()">Guardar</button>
-      </div>
-    </div>
-  </div>
-</div>
 
   <div>
     <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
